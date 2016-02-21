@@ -1,5 +1,5 @@
 ### About
-* Lang: Python:
+* Language: Python
 * Description: Class to create a Magic Square of odd order
 
 
