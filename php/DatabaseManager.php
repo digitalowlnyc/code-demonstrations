@@ -43,14 +43,42 @@
 			mysqli_close($connection);
 		}
 		
-		// Execute a query
+		// Execute a query. Preferable to use doPreparedStatement for
+		// security purposes.
 		function doQuery($sql)
 		{
 			if(!$result = mysqli_query($sql)) {
-				die('Error: ' . mysqli_error());
+				die('Error running query: ' . mysqli_error());
 			};
 						
 			return($result);
+		}
+
+		// Execute prepared statement and return result as array of keyed-arrays
+		function doPreparedStatement($preparedStatement, $bindParameters) {
+			if ($stmt = $connection->prepare($preparedStatement)) {
+
+				/* bind parameters for markers */
+				foreach($bindParameters as $parm=>$val) {
+					$stmt->bind_param($parm, $val);
+				}
+
+				/* execute query */
+				$stmt->execute();
+				$result = $stmt->get_result();
+
+				$resultArray = [];
+				while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+					$resultArray[] = $row;
+				}
+
+				/* close statement */
+				$stmt->close();
+
+				return $resultArray;
+			} else {
+				die('Error creating prepared statement: ' . mysqli_error());
+			}
 		}
 	}
 ?>
