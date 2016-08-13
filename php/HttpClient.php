@@ -94,7 +94,7 @@ class HttpClient
                 logger("Retrieve url with query string: [$httpMethod] $url");
             }
         } else {
-            throw new Exception("Unsuported HTTP method: " . $httpMethod);
+            throw new Exception("Unsupported HTTP method: " . $httpMethod);
         }
 
         curl_setopt($ch, CURLOPT_URL, $url);
