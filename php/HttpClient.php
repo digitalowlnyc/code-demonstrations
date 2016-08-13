@@ -65,7 +65,6 @@ class HttpClient
     }
 
     private function retrieveUrl($url, $httpMethod, $params = []) {
-        $h = $this->fileHandle = fopen("req" . date("H_i_s"), 'w+');
 
         if($this->verbose) {
             logger("Retrieve url: [$httpMethod] $url");
@@ -100,9 +99,7 @@ class HttpClient
         curl_setopt($ch, CURLOPT_URL, $url);
 
         // MAKE THE REQUEST!
-        fwrite($h, "Here");
         $response = $this->execute();
-        fwrite($h, "Done 1");
 
         if($response === false) {
             throw new Exception("Requested failed");
@@ -117,13 +114,11 @@ class HttpClient
         if($this->verbose) {
             logger($httpResult);
         }
-        fwrite($h, "Done 2");
 
         curl_close($ch);
         if($this->verbose) {
             logger("Connection close for url: [$httpMethod] $url");
         }
-        fwrite($h, "Done 3");
 
         return $httpResult;
     }
